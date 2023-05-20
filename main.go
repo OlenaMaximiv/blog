@@ -5,10 +5,52 @@ import (
 	"html/template"
 	"github.com/OlenaMaximiv/blog/handlers"
 	_ "github.com/lib/pq"
-	
+	"log"
+	"fmt"
+	"database/sql"
 )
 
+func InitializeDB() error {
+	// Connection parameters
+	host := "localhost"
+	port := 5432
+	user := "postgres"
+	password := "postgres"
+	dbname := "blog"
+
+	// Connection string
+	connStr := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, dbname)
+
+	// Open a database connection
+	db, err := sql.Open("postgres", connStr)
+	if err != nil {
+		return err
+	}
+
+	// Ping the database to check the connection
+	err = db.Ping()
+	if err != nil {
+		return err
+	}
+
+	// Print a success message
+	log.Println("Connected to the database!")
+
+	// Close the database connection
+	defer db.Close()
+
+	// Additional database initialization logic
+	// ...
+
+	return nil
+}
+
 func main() {
+	err := InitializeDB()
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	http.HandleFunc("/", homeHandler)
 	http.HandleFunc("/comment", handlers.CommentHandler)
 	http.HandleFunc("/forgot-password", handlers.ForgotPasswordHandler)
@@ -20,13 +62,6 @@ func main() {
 	http.HandleFunc("/reset-password", handlers.ResetPasswordHandler)
 
 	http.ListenAndServe(":8080", nil)
-
-	err := InitializeDB()
-	if err != nil {
-		panic(err)
-	}
-	defer CloseDB()
-
 }
 
 

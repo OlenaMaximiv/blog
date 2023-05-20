@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"database/sql"
-	
 	"net/http"
 
 	_ "github.com/lib/pq"
@@ -26,7 +25,14 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 		defer db.Close()
 
 		// Insert new user into the database
-		_, err = db.Exec("INSERT INTO users (username, password) VALUES ($1, $2)", username, password)
+		stmt, err := db.Prepare("INSERT INTO users (username, password) VALUES ($1, $2)")
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		defer stmt.Close()
+
+		_, err = stmt.Exec(username, password)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
