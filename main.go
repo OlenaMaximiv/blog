@@ -58,7 +58,9 @@ func main() {
 	http.HandleFunc("/logout", handlers.LogoutHandler)
 	http.HandleFunc("/post", handlers.PostHandler)
 	http.HandleFunc("/profile", handlers.ProfileHandler)
-	http.HandleFunc("/register", handlers.RegisterHandler)
+	http.HandleFunc("/registration", handlers.RegisterHandler)
+
+
 	http.HandleFunc("/reset-password", handlers.ResetPasswordHandler)
 
 	http.ListenAndServe(":8080", nil)
@@ -76,6 +78,15 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
+
+func RegisterHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodGet {
+		// Display the registration form
+		http.ServeFile(w, r, "templates/registration.html")
+	}
+	// ...
+}
+
 
 func loginHandler(w http.ResponseWriter, r *http.Request) {
     if r.Method == "GET" {
