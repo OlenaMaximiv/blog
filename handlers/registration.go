@@ -1,24 +1,38 @@
 package handlers
 
 import (
-	"fmt"
+	"database/sql"
+	
 	"net/http"
+
+	_ "github.com/lib/pq"
 )
 
-func RegistrationHandler(w http.ResponseWriter, r *http.Request) {
+func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
 		// Display the registration form
-		fmt.Fprintf(w, "Registration Form")
+		http.ServeFile(w, r, "templates/registration.html")
 	} else if r.Method == http.MethodPost {
-		 // Retrieve the necessary data from the request
-		// Example code:
-		// username := r.FormValue("username")         // Assuming the form has an input field with the name "username"
-		// email := r.FormValue("email")               // Assuming the form has an input field with the name "email"
-		// password := r.FormValue("password")         // Assuming the form has an input field with the name "password"
+		// Parse form values
+		username := r.FormValue("username")
+		password := r.FormValue("password")
 
-		// Process the data as needed
+		// Establish the database connection
+		db, err := sql.Open("postgres", "user=postgres password=postgres dbname=blog sslmode=disable")
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		defer db.Close()
 
-		// Display a success message or an error message on the web page
-		fmt.Fprintf(w, "Registration successful!")
+		// Insert new user into the database
+		_, err = db.Exec("INSERT INTO users (username, password) VALUES ($1, $2)", username, password)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// Redirect to a success page or another endpoint
+		http.Redirect(w, r, "/success", http.StatusSeeOther)
 	}
 }
