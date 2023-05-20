@@ -8,6 +8,7 @@ import (
 )
 
 func main() {
+	http.HandleFunc("/", homeHandler)
 	http.HandleFunc("/comment", handlers.CommentHandler)
 	http.HandleFunc("/forgot-password", handlers.ForgotPasswordHandler)
 	http.HandleFunc("/login", handlers.LoginHandler)
@@ -19,3 +20,19 @@ func main() {
 
 	http.ListenAndServe(":8080", nil)
 }
+
+func homeHandler(w http.ResponseWriter, r *http.Request) {
+	// Parse the home page template
+	tmpl := template.Must(template.ParseFiles("templates/index.html"))
+
+	// Execute the template, passing nil as the data since the home page doesn't require any dynamic data
+	err := tmpl.Execute(w, nil)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+}
+
+
+
+
