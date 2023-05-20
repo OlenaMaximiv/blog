@@ -1,3 +1,3 @@
-module github.com/OlenaMaximiv/blog/handlers
+module github.com/OlenaMaximiv/blog
 
 go 1.18

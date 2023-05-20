@@ -10,14 +10,14 @@ func PostHandler(w http.ResponseWriter, r *http.Request) {
 		// Display the post form
 		fmt.Fprintf(w, "Post Form")
 	} else if r.Method == http.MethodPost {
-		// Handle the submission of the post form
-		title := r.FormValue("title")       // Assuming the form has an input field with the name "title"
-		content := r.FormValue("content")   // Assuming the form has an input field with the name "content"
-		// Additional fields as needed
-
-		// Process and save the post to your data store
+		// Retrieve the necessary data from the request
 		// Example code:
-		// savePostToDatabase(title, content)
-		fmt.Fprintf(w, "Post submitted successfully!")
+		// title := r.FormValue("title")       // Assuming the form has an input field with the name "title"
+		// content := r.FormValue("content")   // Assuming the form has an input field with the name "content"
+
+		// Process the data as needed
+
+		// Display a success message or an error message on the web page
+		fmt.Fprintf(w, "Post successful!")
 	}
 }
