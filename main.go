@@ -4,8 +4,6 @@ import (
 	"net/http"
 	"html/template"
 	"github.com/OlenaMaximiv/blog/handlers"
-	"database/sql"
-	"fmt"
 	_ "github.com/lib/pq"
 	
 )
@@ -23,28 +21,12 @@ func main() {
 
 	http.ListenAndServe(":8080", nil)
 
-	// Connection parameters
-	connStr := "user=postgres password=postgres dbname=blog sslmode=disable"
-
-	// Establish the database connection
-	db, err := sql.Open("postgres", connStr)
+	err := InitializeDB()
 	if err != nil {
 		panic(err)
 	}
+	defer CloseDB()
 
-	// Ping the database to test the connection
-	err = db.Ping()
-	if err != nil {
-		panic(err)
-	}
-
-	fmt.Println("Connected to PostgreSQL")
-
-	// Close the database connection when done
-	defer db.Close()
-
-	// Rest of your application code
-	// ...
 }
 
 
