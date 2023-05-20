@@ -3,7 +3,8 @@ package main
 import (
 	"net/http"
 
-	"github.com/your-username/mywebapp/handlers"
+	"github.com/OlenaMaximiv/blog/handlers"
+	
 )
 
 func main() {
