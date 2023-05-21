@@ -1,18 +1,39 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>User Registration</title>
+    <title>Registration</title>
 </head>
 <body>
-    <h2>User Registration</h2>
-    <form method="POST" action="/register">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required autocomplete="username"><br>
-
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required autocomplete="new-password"><br>
-
-        <input type="submit" value="Register">
+    <h1>Registration</h1>
+    
+    <form method="POST" action="/registration">
+        <div>
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username">
+            <span>{{.username}}</span>
+        </div>
+        
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email">
+            <span>{{.email}}</span>
+        </div>
+        
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password">
+            <span>{{.password}}</span>
+        </div>
+        
+        <div>
+            <label for="confirm_password">Confirm Password:</label>
+            <input type="password" id="confirm_password" name="confirm_password">
+            <span>{{.confirm_password}}</span>
+        </div>
+        
+        <div>
+            <button type="submit">Register Now</button>
+        </div>
     </form>
 </body>
 </html>
